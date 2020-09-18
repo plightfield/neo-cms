@@ -1,25 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import React from "react";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import "src/templates";
+import Login from "src/pages/Login";
+import Dash from "src/pages/Dash";
+import Preview from "src/pages/Preview";
+import NotFound from "src/pages/NotFound";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route path='/' exact>
+          <Redirect to={{ pathname: "/dash" }}></Redirect>
+        </Route>
+        <Route path='/login'>
+          <Login />
+        </Route>
+        <Route path='/dash'>
+          <Dash />
+        </Route>
+        <Route path='/preview'>
+          <Preview />
+        </Route>
+        <Route path='*'>
+          <NotFound />
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 }
 
