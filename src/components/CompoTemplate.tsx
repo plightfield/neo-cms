@@ -1,4 +1,4 @@
-import { Space, Tabs } from "antd";
+import { Tabs } from "antd";
 import React, { useContext } from "react";
 import { DashContext } from "src/pages/DashProvider";
 import styled from "styled-components";
