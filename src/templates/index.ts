@@ -1,6 +1,44 @@
+import { Rule } from "antd/lib/form";
+
 const modules = (require as any).context(".", false);
 const templates: { name: string; content: string }[] = [];
-const variables: { name: string; content: any }[] = [];
+const configurations: { name: string; content: any }[] = [];
+
+/**
+ * configuration that template will obtain
+ *
+ * @export
+ * @interface Configuration
+ */
+export interface Configuration {
+  // maybe chinese
+  name: string;
+  // how this component work
+  description: string;
+  // thumbnail image
+  image: string;
+  variables: {
+    label: string;
+    name: string;
+    element: any;
+    elementProps?: { [key: string]: any };
+    initialValue?: any;
+    trigger?: string;
+    valuePropName?: string;
+    rules?: Rule[];
+    // how this form item work
+    description?: string;
+  }[];
+}
+
+export interface Template {
+  name: string;
+  style: string;
+  content: string;
+  script: string;
+  configuration: Configuration;
+}
+
 modules.keys().forEach((key: string) => {
   if (/\.ejs$/.test(key)) {
     templates.push({
@@ -9,23 +47,17 @@ modules.keys().forEach((key: string) => {
     });
   }
   if (/\.ts$/.test(key) && key !== "./index.ts") {
-    variables.push({
+    configurations.push({
       name: key.match(/(?<=\/).*(?=\.ts)/)?.[0] || "",
       content: modules(key).default,
     });
   }
 });
 
-const result: {
-  name: string;
-  style: string;
-  content: string;
-  script: string;
-  variables: string;
-}[] = [];
+const result: Template[] = [];
 
 for (let item of templates) {
-  if (!variables.find((el) => el.name === item.name)) {
+  if (!configurations.find((el) => el.name === item.name)) {
     throw new Error(`${item.name} shold config a same name ts file`);
   }
   const style =
@@ -39,9 +71,9 @@ for (let item of templates) {
     style,
     content,
     script,
-    variables: variables.find((el) => el.name === item.name)?.content || {},
+    configuration:
+      configurations.find((el) => el.name === item.name)?.content || {},
   });
 }
-console.log(result);
 
 export default result;

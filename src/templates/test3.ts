@@ -3,7 +3,7 @@ import { Configuration } from ".";
 import image from "src/assets/test.jpg";
 
 const config: Configuration = {
-  name: "测试表单",
+  name: "测试表单3",
   description: "仅仅是用来测试",
   image,
   variables: [
